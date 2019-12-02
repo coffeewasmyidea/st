@@ -8,6 +8,8 @@
 + st-scrollback
 + st-scrollback-mouse
 + st-solarized-both
++ st-font2
++ alpha
 
 ## Requirements
 

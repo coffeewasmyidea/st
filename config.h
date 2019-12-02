@@ -5,8 +5,9 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "FiraCode:pixelsize=14:antialias=true:autohint=true";
-static int borderpx = 3;
+static char *font = "FiraCode:pixelsize=16:antialias=true:autohint=true";
+static char *font2[] = {"Inconsolata for Powerline:pixelsize=16:antialias=true:autohint=true"};
+static int borderpx = 2;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -82,6 +83,9 @@ char *termname = "st-256color";
  */
 unsigned int tabspaces = 4;
 
+/* bg opacity */
+float alpha = 0.9;
+
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* solarized dark */
@@ -147,8 +151,8 @@ static unsigned int cursorshape = 2;
  * Default columns and rows numbers
  */
 
-static unsigned int cols = 80;
-static unsigned int rows = 24;
+static unsigned int cols = 90;
+static unsigned int rows = 28;
 
 /*
  * Default colour and shape of the mouse cursor
