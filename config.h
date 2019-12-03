@@ -6,13 +6,6 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font = "FiraCode:pixelsize=16:antialias=true:autohint=true";
-static char *font2[] = {"Inconsolata for Powerline:pixelsize=16:antialias=true:autohint=true"};
-
-/* disable bold, italic and roman fonts globally */
-int disablebold = 0;
-int disableitalic = 0;
-int disableroman = 0;
-
 static int borderpx = 2;
 
 /*
@@ -37,9 +30,9 @@ static float chscale = 1.0;
 /*
  * word delimiter string
  *
- * More advanced example: L" `'\"()[]{}"
+ * More advanced example: " `'\"()[]{}"
  */
-wchar_t *worddelimiters = L" ";
+char *worddelimiters = " ";
 
 /* selection timeouts (in milliseconds) */
 static unsigned int doubleclicktimeout = 300;
@@ -89,9 +82,6 @@ char *termname = "st-256color";
  */
 unsigned int tabspaces = 8;
 
-/* bg opacity */
-float alpha = 0.9;
-
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* solarized dark */
@@ -111,27 +101,6 @@ static const char *colorname[] = {
 	"#6c71c4",  /* 13: brmagenta*/
 	"#93a1a1",  /* 14: brcyan   */
 	"#fdf6e3",  /* 15: brwhite  */
-};
-
-/* Terminal colors for alternate (light) palette */
-static const char *altcolorname[] = {
-	/* solarized light */
-	"#eee8d5",  /*  0: black    */
-	"#dc322f",  /*  1: red      */
-	"#859900",  /*  2: green    */
-	"#b58900",  /*  3: yellow   */
-	"#268bd2",  /*  4: blue     */
-	"#d33682",  /*  5: magenta  */
-	"#2aa198",  /*  6: cyan     */
-	"#073642",  /*  7: white    */
-	"#fdf6e3",  /*  8: brblack  */
-	"#cb4b16",  /*  9: brred    */
-	"#93a1a1",  /* 10: brgreen  */
-	"#839496",  /* 11: bryellow */
-	"#657b83",  /* 12: brblue   */
-	"#6c71c4",  /* 13: brmagenta*/
-	"#586e75",  /* 14: brcyan   */
-	"#002b36",  /* 15: brwhite  */
 };
 
 
@@ -174,23 +143,19 @@ static unsigned int mousebg = 0;
 static unsigned int defaultattr = 11;
 
 /*
- * Force mouse select/shortcuts while mask is active (when MODE_MOUSE is set).
- * Note that if you want to use ShiftMask with selmasks, set this to an other
- * modifier, set to 0 to not use it.
- */
-static uint forcemousemod = ShiftMask;
-
-/*
  * Internal mouse shortcuts.
  * Beware that overloading Button1 will disable the selection.
  */
 static MouseShortcut mshortcuts[] = {
-	/* mask                 button   function        argument       release */
-	{ ShiftMask,            Button4, kscrollup,      {.i = 1} },
-	{ ShiftMask,            Button5, kscrolldown,    {.i = 1} },
-	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+	/* button               mask            string */
+	{ Button4,              XK_NO_MOD,      "\031" },
+	{ Button5,              XK_NO_MOD,      "\005" },
+};
+
+MouseKey mkeys[] = {
+	/* button               mask            function        argument */
+	{ Button4,              ShiftMask,      kscrollup,      {.i =  1} },
+	{ Button5,              ShiftMask,      kscrolldown,    {.i =  1} },
 };
 
 /* Internal keyboard shortcuts. */
@@ -203,19 +168,16 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Up,          zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Down,        zoom,           {.f = -1} },
+	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
+	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
 	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-	{ TERMMOD,              XK_Insert,      selpaste,       {.i =  0} },
+	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ ShiftMask,            XK_Up,          kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Down,        kscrolldown,    {.i = -1} },
-	{ ShiftMask,            XK_k,           kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_j,           kscrolldown,    {.i = -1} },
-	{ XK_ANY_MOD,           XK_F6,          swapcolors,     {.i =  0} },
 };
 
 /*
@@ -233,6 +195,10 @@ static Shortcut shortcuts[] = {
  * * 0: no value
  * * > 0: cursor application mode enabled
  * * < 0: cursor application mode disabled
+ * crlf value
+ * * 0: no value
+ * * > 0: crlf mode is enabled
+ * * < 0: crlf mode is disabled
  *
  * Be careful with the order of the definitions because st searches in
  * this table sequentially, so any XK_ANY_MOD must be in the last
@@ -250,6 +216,13 @@ static KeySym mappedkeys[] = { -1 };
  * numlock (Mod2Mask) and keyboard layout (XK_SWITCH_MOD) are ignored.
  */
 static uint ignoremod = Mod2Mask|XK_SWITCH_MOD;
+
+/*
+ * Override mouse-select while mask is active (when MODE_MOUSE is set).
+ * Note that if you want to use ShiftMask with selmasks, set this to an other
+ * modifier, set to 0 to not use it.
+ */
+static uint forceselmod = ShiftMask;
 
 /*
  * This is the huge key array which defines all compatibility to the Linux

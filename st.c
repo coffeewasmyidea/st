@@ -42,7 +42,7 @@
 #define ISCONTROLC0(c)		(BETWEEN(c, 0, 0x1f) || (c) == '\177')
 #define ISCONTROLC1(c)		(BETWEEN(c, 0x80, 0x9f))
 #define ISCONTROL(c)		(ISCONTROLC0(c) || ISCONTROLC1(c))
-#define ISDELIM(u)		(u && wcschr(worddelimiters, u))
+#define ISDELIM(u)		(utf8strchr(worddelimiters, u) != NULL)
 #define TLINE(y)		((y) < term.scr ? term.hist[((y) + term.histi - \
 				term.scr + HISTSIZE + 1) % HISTSIZE] : \
 				term.line[(y) - term.scr])
@@ -142,7 +142,7 @@ typedef struct {
 /* ESC '[' [[ [<priv>] <arg> [;]] <mode> [<mode>]] */
 typedef struct {
 	char buf[ESC_BUF_SIZ]; /* raw string */
-	size_t len;            /* raw string length */
+	int len;               /* raw string length */
 	char priv;
 	int arg[ESC_ARG_SIZ];
 	int narg;              /* nb of args */
@@ -153,9 +153,8 @@ typedef struct {
 /* ESC type [[ [<priv>] <arg> [;]] <mode>] ESC '\' */
 typedef struct {
 	char type;             /* ESC type ... */
-	char *buf;             /* allocated raw string */
-	size_t siz;            /* allocation size */
-	size_t len;            /* raw string length */
+	char buf[STR_BUF_SIZ]; /* raw string */
+	int len;               /* raw string length */
 	char *args[STR_ARG_SIZ];
 	int narg;              /* nb of args */
 } STREscape;
@@ -218,6 +217,7 @@ static void selsnap(int *, int *, int);
 static size_t utf8decode(const char *, Rune *, size_t);
 static Rune utf8decodebyte(char, size_t *);
 static char utf8encodebyte(Rune, size_t);
+static char *utf8strchr(char *, Rune);
 static size_t utf8validate(Rune *, size_t);
 
 static char *base64dec(const char *);
@@ -344,6 +344,23 @@ utf8encodebyte(Rune u, size_t i)
 	return utfbyte[i] | (u & ~utfmask[i]);
 }
 
+char *
+utf8strchr(char *s, Rune u)
+{
+	Rune r;
+	size_t i, j, len;
+
+	len = strlen(s);
+	for (i = 0, j = 0; i < len; i += j) {
+		if (!(j = utf8decode(&s[i], &r, len - i)))
+			break;
+		if (r == u)
+			return &(s[i]);
+	}
+
+	return NULL;
+}
+
 size_t
 utf8validate(Rune *u, size_t i)
 {
@@ -374,7 +391,7 @@ char
 base64dec_getc(const char **src)
 {
 	while (**src && !isprint(**src)) (*src)++;
-	return **src ? *((*src)++) : '=';  /* emulate padding if string ends */
+	return *((*src)++);
 }
 
 char *
@@ -391,10 +408,6 @@ base64dec(const char *src)
 		int b = base64_digits[(unsigned char) base64dec_getc(&src)];
 		int c = base64_digits[(unsigned char) base64dec_getc(&src)];
 		int d = base64_digits[(unsigned char) base64dec_getc(&src)];
-
-		/* invalid input. 'a' can be -1, e.g. if src is "\n" (c-str) */
-		if (a == -1 || b == -1)
-			break;
 
 		*dst++ = (a << 2) | ((b & 0x30) >> 4);
 		if (c == -1)
@@ -470,7 +483,7 @@ selextend(int col, int row, int type, int done)
 	selnormalize();
 	sel.type = type;
 
-	if (oldey != sel.oe.y || oldex != sel.oe.x || oldtype != sel.type || sel.mode == SEL_EMPTY)
+	if (oldey != sel.oe.y || oldex != sel.oe.x || oldtype != sel.type)
 		tsetdirt(MIN(sel.nb.y, oldsby), MAX(sel.ne.y, oldsey));
 
 	sel.mode = done ? SEL_IDLE : SEL_READY;
@@ -1055,7 +1068,6 @@ tswapscreen(void)
 	term.mode ^= MODE_ALTSCREEN;
 	tfulldirt();
 }
-
 void
 kscrolldown(const Arg* a)
 {
@@ -1078,7 +1090,6 @@ void
 kscrollup(const Arg* a)
 {
 	int n = a->i;
-
 	if (n < 0)
 		n = term.row + n;
 
@@ -1622,7 +1633,6 @@ tsetmode(int priv, int set, int *args, int narg)
 			case 1015: /* urxvt mangled mouse mode; incompatible
 				      and can be mistaken for other control
 				      codes. */
-				break;
 			default:
 				fprintf(stderr,
 					"erresc: unknown private set/reset mode %d\n",
@@ -1864,7 +1874,7 @@ csihandle(void)
 void
 csidump(void)
 {
-	size_t i;
+	int i;
 	uint c;
 
 	fprintf(stderr, "ESC[");
@@ -1894,7 +1904,7 @@ csireset(void)
 void
 strhandle(void)
 {
-	char *p = NULL, *dec;
+	char *p = NULL;
 	int j, narg, par;
 
 	term.esc &= ~(ESC_STR_END|ESC_STR);
@@ -1912,6 +1922,8 @@ strhandle(void)
 			return;
 		case 52:
 			if (narg > 2) {
+				char *dec;
+
 				dec = base64dec(strescseq.args[2]);
 				if (dec) {
 					xsetsel(dec);
@@ -1929,10 +1941,7 @@ strhandle(void)
 		case 104: /* color reset, here p = NULL */
 			j = (narg > 1) ? atoi(strescseq.args[1]) : -1;
 			if (xsetcolorname(j, p)) {
-				if (par == 104 && narg <= 1)
-					return; /* color reset without parameter */
-				fprintf(stderr, "erresc: invalid color j=%d, p=%s\n",
-				        j, p ? p : "(null)");
+				fprintf(stderr, "erresc: invalid color %s\n", p);
 			} else {
 				/*
 				 * TODO if defaultbg color is changed, borders
@@ -1982,7 +1991,7 @@ strparse(void)
 void
 strdump(void)
 {
-	size_t i;
+	int i;
 	uint c;
 
 	fprintf(stderr, "ESC%c", strescseq.type);
@@ -2009,10 +2018,7 @@ strdump(void)
 void
 strreset(void)
 {
-	strescseq = (STREscape){
-		.buf = xrealloc(strescseq.buf, STR_BUF_SIZ),
-		.siz = STR_BUF_SIZ,
-	};
+	memset(&strescseq, 0, sizeof(strescseq));
 }
 
 void
@@ -2387,6 +2393,7 @@ tputc(Rune u)
 			goto check_control_code;
 		}
 
+
 		if (IS_SET(MODE_SIXEL)) {
 			/* TODO: implement sixel mode */
 			return;
@@ -2394,7 +2401,7 @@ tputc(Rune u)
 		if (term.esc&ESC_DCS && strescseq.len == 0 && u == 'q')
 			term.mode |= MODE_SIXEL;
 
-		if (strescseq.len+len >= strescseq.siz) {
+		if (strescseq.len+len >= sizeof(strescseq.buf)-1) {
 			/*
 			 * Here is a bug in terminals. If the user never sends
 			 * some code to stop the str or esc command, then st
@@ -2408,10 +2415,7 @@ tputc(Rune u)
 			 * term.esc = 0;
 			 * strhandle();
 			 */
-			if (strescseq.siz > (SIZE_MAX - UTF_SIZ) / 2)
-				return;
-			strescseq.siz *= 2;
-			strescseq.buf = xrealloc(strescseq.buf, strescseq.siz);
+			return;
 		}
 
 		memmove(&strescseq.buf[strescseq.len], c, len);
@@ -2654,10 +2658,9 @@ draw(void)
 	drawregion(0, 0, term.col, term.row);
 	if (term.scr == 0)
 		xdrawcursor(cx, term.c.y, term.line[term.c.y][cx],
-				term.ocx, term.ocy, term.line[term.ocy][term.ocx]);
+			term.ocx, term.ocy, term.line[term.ocy][term.ocx]);
 	term.ocx = cx, term.ocy = term.c.y;
 	xfinishdraw();
-	xximspot(term.ocx, term.ocy);
 }
 
 void

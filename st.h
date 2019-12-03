@@ -74,8 +74,14 @@ typedef union {
 	uint ui;
 	float f;
 	const void *v;
-	const char *s;
 } Arg;
+
+typedef struct {
+	 uint b;
+	 uint mask;
+	 void (*func)(const Arg *);
+	 const Arg arg;
+} MouseKey;
 
 void die(const char *, ...);
 void redraw(void);
@@ -117,11 +123,10 @@ char *xstrdup(char *);
 extern char *utmp;
 extern char *stty_args;
 extern char *vtiden;
-extern wchar_t *worddelimiters;
+extern char *worddelimiters;
 extern int allowaltscreen;
 extern char *termname;
-extern int usealtcolors;
 extern unsigned int tabspaces;
 extern unsigned int defaultfg;
 extern unsigned int defaultbg;
-extern float alpha;
+extern MouseKey mkeys[];
