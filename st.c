@@ -1912,6 +1912,7 @@ strhandle(void)
 {
 	char *p = NULL, *dec;
 	int j, narg, par;
+	static int winname = 0;
 
 	term.esc &= ~(ESC_STR_END|ESC_STR);
 	strparse();
@@ -1921,7 +1922,15 @@ strhandle(void)
 	case ']': /* OSC -- Operating System Command */
 		switch (par) {
 		case 0:
+			if (narg > 1) {
+				xsettitle(strescseq.args[1]);
+				xseticontitle(strescseq.args[1]);
+			}
+			return;
 		case 1:
+			if (narg > 1)
+				xseticontitle(strescseq.args[1]);
+			return;
 		case 2:
 			if (narg > 1)
 				xsettitle(strescseq.args[1]);
