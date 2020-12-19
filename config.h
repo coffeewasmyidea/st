@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+static char *font = "Liberation Mono:pixelsize=16:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -144,9 +144,8 @@ static unsigned int cursorshape = 2;
 /*
  * Default columns and rows numbers
  */
-
-static unsigned int cols = 80;
-static unsigned int rows = 24;
+static unsigned int cols = 110;
+static unsigned int rows = 30;
 
 /*
  * Default colour and shape of the mouse cursor
@@ -168,22 +167,30 @@ static unsigned int defaultattr = 11;
  */
 static uint forcemousemod = ShiftMask;
 
+
 /*
  * Internal mouse shortcuts.
  * Beware that overloading Button1 will disable the selection.
  */
 static MouseShortcut mshortcuts[] = {
-	/* mask                 button   function        argument       release */
-	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
-	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+	/* button         mask          function     release */
+	{ Button4,        XK_NO_MOD,     ttysend,    {.s = "\031"} },
+	{ Button5,        XK_NO_MOD,     ttysend,    {.s = "\005"} },
+	{ Button4,        ShiftMask,     ttysend,    {.s = "\033[5;2~"} },
+	{ Button5,        ShiftMask,     ttysend,    {.s = "\033[6;2~"} },
 };
 
 /* Internal keyboard shortcuts. */
 #define MODKEY Mod1Mask
 #define TERMMOD (ControlMask|ShiftMask)
+
+MouseKey mkeys[] = {
+	/* button               mask            function        argument */
+    { Button4,              ShiftMask,      kscrollup,      {.i =  1} },
+    { Button5,              ShiftMask,      kscrolldown,    {.i =  1} },
+    { Button4,              TERMMOD,        zoom,           {.f =  +1} },
+    { Button5,              TERMMOD,        zoom,           {.f =  -1} },
+};
 
 static Shortcut shortcuts[] = {
 	/* mask                 keysym          function        argument */
@@ -191,16 +198,18 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
+	{ TERMMOD,              XK_Up,          zoom,           {.f = +1} },
+	{ TERMMOD,              XK_Down,        zoom,           {.f = -1} },
 	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
+	{ TERMMOD,              XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+    { ShiftMask,            XK_Up,          kscrollup,      {.i = -1} },
+    { ShiftMask,            XK_Down,        kscrolldown,    {.i = -1} },
+    { ShiftMask,            XK_K,           kscrollup,      {.i = -1} },
+    { ShiftMask,            XK_J,           kscrolldown,    {.i = -1} },
 };
 
 /*
