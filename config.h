@@ -170,6 +170,9 @@ static unsigned int defaultattr = 11;
  */
 static uint forcemousemod = ShiftMask;
 
+static char *openurlcmd[] = { "/bin/zsh", "-c",
+	"xurls | rofi -dmenu -l 10 -columns 1 | xargs -r xdg-open",
+	"externalpipe", NULL };
 
 /*
  * Internal mouse shortcuts.
@@ -188,7 +191,7 @@ static MouseShortcut mshortcuts[] = {
 #define TERMMOD (ControlMask|ShiftMask)
 
 MouseKey mkeys[] = {
-	/* button               mask            function        argument */
+    /* button               mask            function        argument */
     { Button4,              ShiftMask,      kscrollup,      {.i =  1} },
     { Button5,              ShiftMask,      kscrolldown,    {.i =  1} },
     { Button4,              TERMMOD,        zoom,           {.f =  +1} },
@@ -196,19 +199,20 @@ MouseKey mkeys[] = {
 };
 
 static Shortcut shortcuts[] = {
-	/* mask                 keysym          function        argument */
-	{ XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
-	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
-	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
-	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Up,          zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Down,        zoom,           {.f = -1} },
-	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
-	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
-	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
-	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-	{ TERMMOD,              XK_Insert,      selpaste,       {.i =  0} },
-	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+    /* mask                 keysym          function        argument */
+    { XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
+    { ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
+    { ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
+    { XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
+    { TERMMOD,              XK_Up,          zoom,           {.f = +1} },
+    { TERMMOD,              XK_Down,        zoom,           {.f = -1} },
+    { TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
+    { TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
+    { TERMMOD,              XK_V,           clippaste,      {.i =  0} },
+    { TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
+    { TERMMOD,              XK_Insert,      selpaste,       {.i =  0} },
+    { TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+    { TERMMOD,              XK_U,           externalpipe,   { .v = openurlcmd } },
     { ShiftMask,            XK_Up,          kscrollup,      {.i = -1} },
     { ShiftMask,            XK_Down,        kscrolldown,    {.i = -1} },
     { ShiftMask,            XK_K,           kscrollup,      {.i = -1} },
