@@ -16,7 +16,7 @@ static int borderpx = 2;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/bin/zsh";
+static char *shell = "/bin/bash";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
@@ -94,29 +94,50 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 1.0;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"black",
-	"red3",
-	"green3",
-	"yellow3",
-	"blue2",
-	"magenta3",
-	"cyan3",
-	"gray90",
+	"#282828",
+	"#9d0006",
+	"#79740e",
+	"#b57614",
+	"#83a598",
+	"#8f3f71",
+	"#00a7af",
+	"#fdf4c1",
 
 	/* 8 bright colors */
-	"gray50",
-	"red",
-	"green",
-	"yellow",
-	"#5c5cff",
-	"magenta",
-	"cyan",
-	"white",
+	"#ffee8c",
+	"#fb4933",
+	"#b8bb26",
+	"#fabd2f",
+	"#83a598",
+	"#d3869b",
+	"#3fd7e5",
+	"#ffffc8",
+
+	/* 8 normal colors */
+	/* "#1e1c31", */
+	/* "#ff8080", */
+	/* "#95ffa4", */
+	/* "#ffe9aa", */
+	/* "#91ddff", */
+	/* "#c991e1", */
+	/* "#aaffe4", */
+	/* "#cbe3e7", */
+
+	/* 8 bright colors */
+	/* "#565575", */
+	/* "#ff5458", */
+	/* "#62d196", */
+	/* "#ffb378", */
+	/* "#65b2ff", */
+	/* "#906cff", */
+	/* "#63f2f1", */
+	/* "#a6b3cc", */
+
 
 	[255] = 0,
 
@@ -124,7 +145,6 @@ static const char *colorname[] = {
 	"#cccccc",
 	"#555555",
 };
-
 
 /*
  * Default colors (colorname index)
@@ -134,7 +154,6 @@ unsigned int defaultfg = 7;
 unsigned int defaultbg = 0;
 static unsigned int defaultcs = 256;
 static unsigned int defaultrcs = 257;
-
 /*
  * Default shape of cursor
  * 2: Block ("█")
@@ -170,7 +189,7 @@ static unsigned int defaultattr = 11;
  */
 static uint forcemousemod = ShiftMask;
 
-static char *openurlcmd[] = { "/bin/zsh", "-c",
+static char *openurlcmd[] = { "/bin/sh", "-c",
 	"xurls | rofi -dmenu -l 10 -columns 1 | xargs -r xdg-open",
 	"externalpipe", NULL };
 
@@ -215,8 +234,6 @@ static Shortcut shortcuts[] = {
     { TERMMOD,              XK_U,           externalpipe,   { .v = openurlcmd } },
     { ShiftMask,            XK_Up,          kscrollup,      {.i = -1} },
     { ShiftMask,            XK_Down,        kscrolldown,    {.i = -1} },
-    { ShiftMask,            XK_K,           kscrollup,      {.i = -1} },
-    { ShiftMask,            XK_J,           kscrolldown,    {.i = -1} },
 };
 
 /*

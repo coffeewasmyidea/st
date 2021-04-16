@@ -4,7 +4,6 @@ This is my terminal which I use every day.
 
 + Based on [st-0.8.4](https://st.suckless.org/)
 + Default font: [Droid Sans Mono Slashed for Powerline](https://github.com/powerline/fonts/tree/master/DroidSansMonoSlashed)
-+ Default theme: [Solarized](https://ethanschoonover.com/solarized/)
 
 ## Bindings
 
