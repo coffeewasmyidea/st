@@ -99,61 +99,41 @@ float alpha = 1.0;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"#282828",
-	"#9d0006",
-	"#79740e",
-	"#b57614",
-	"#83a598",
-	"#8f3f71",
-	"#00a7af",
-	"#fdf4c1",
+	"#3b4252", /* black   */
+	"#bf616a", /* red     */
+	"#a3be8c", /* green   */
+	"#ebcb8b", /* yellow  */
+	"#81a1c1", /* blue    */
+	"#b48ead", /* magenta */
+	"#88c0d0", /* cyan    */
+	"#e5e9f0", /* white   */
 
 	/* 8 bright colors */
-	"#ffee8c",
-	"#fb4933",
-	"#b8bb26",
-	"#fabd2f",
-	"#83a598",
-	"#d3869b",
-	"#3fd7e5",
-	"#ffffc8",
-
-	/* 8 normal colors */
-	/* "#1e1c31", */
-	/* "#ff8080", */
-	/* "#95ffa4", */
-	/* "#ffe9aa", */
-	/* "#91ddff", */
-	/* "#c991e1", */
-	/* "#aaffe4", */
-	/* "#cbe3e7", */
-
-	/* 8 bright colors */
-	/* "#565575", */
-	/* "#ff5458", */
-	/* "#62d196", */
-	/* "#ffb378", */
-	/* "#65b2ff", */
-	/* "#906cff", */
-	/* "#63f2f1", */
-	/* "#a6b3cc", */
-
+	"#4c566a", /* black   */
+	"#bf616a", /* red     */
+	"#a3be8c", /* green   */
+	"#ebcb8b", /* yellow  */
+	"#81a1c1", /* blue    */
+	"#b48ead", /* magenta */
+	"#8fbcbb", /* cyan    */
+	"#eceff4", /* white   */
 
 	[255] = 0,
 
 	/* more colors can be added after 255 to use with DefaultXX */
-	"#cccccc",
-	"#555555",
+	"#2e3440", /* background */
+	"#d8dee9", /* foreground */
 };
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 7;
-unsigned int defaultbg = 0;
-static unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 257;
+unsigned int defaultfg = 257;
+unsigned int defaultbg = 256;
+static unsigned int defaultcs = 257;
+static unsigned int defaultrcs = 256;
+
 /*
  * Default shape of cursor
  * 2: Block ("█")
