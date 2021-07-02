@@ -3,8 +3,9 @@
 This is my terminal which I use every day.
 
 + Based on [st-0.8.4](https://st.suckless.org/)
-+ Default theme: [nordtheme](https://st.suckless.org/patches/nordtheme/)
-+ Default font: [Droid Sans Mono Slashed for Powerline](https://github.com/powerline/fonts/tree/master/DroidSansMonoSlashed)
++ Default theme: `Solarized Light`
++ Default font: `Liberation Mono`
++ Spare font: `Source Code Pro`
 
 ## Bindings
 
@@ -30,6 +31,7 @@ This is my terminal which I use every day.
 + alpha
 + externalpipe
 + rightclickpaste
++ font2
 
 ## Simple installation
 
