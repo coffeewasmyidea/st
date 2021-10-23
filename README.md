@@ -1,9 +1,9 @@
 # st - simple terminal emulator for X
 
-This is my terminal which I use every day.
+This is my terminal, which I use every day, and maybe it will suit you too.
 
 + Based on [st-0.8.4](https://st.suckless.org/)
-+ Default theme: `Solarized Light`
++ Default theme: `Gruvbox`
 + Default font: `Liberation Mono`
 + Spare font: `Source Code Pro`
 
@@ -22,7 +22,7 @@ This is my terminal which I use every day.
 + `libXft` library for fonts drawing
 + `Xlib` header files for interacting with an X server
 + `xurls` tool for extract urls from plain text
-+ `Droid Sans Mono Slashed for Powerline` default font which you can change in `config.h`
++ `Liberation Mono` default font which you can change in `config.h`
 
 ## Patches
 
