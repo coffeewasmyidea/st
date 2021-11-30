@@ -1,10 +1,10 @@
 # st - simple terminal emulator for X
 
-This is my terminal, which I use every day, and maybe it will suit you too.
+This is my terminal that I use every day, and maybe it will work for you too.
 
 + Based on [st-0.8.4](https://st.suckless.org/)
-+ Default theme: `Gruvbox`
-+ Default font: `Liberation Mono`
++ Default theme: [Apprentice](http://romainl.github.io/Apprentice/)
++ Default font: [fantasque-sans](https://github.com/belluzj/fantasque-sans)
 + Spare font: `Source Code Pro`
 
 ## Bindings
@@ -22,7 +22,7 @@ This is my terminal, which I use every day, and maybe it will suit you too.
 + `libXft` library for fonts drawing
 + `Xlib` header files for interacting with an X server
 + `xurls` tool for extract urls from plain text
-+ `Liberation Mono` default font which you can change in `config.h`
++ `Fantasque` default font which you can change in `config.h`
 
 ## Patches
 
