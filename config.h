@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=18:antialias=true:autohint=true";
+static char *font = "FantasqueSansMono:pixelsize=18:antialias=true:autohint=true";
 
 /* Spare fonts */
 static char *font2[] = {
@@ -191,30 +191,30 @@ static MouseShortcut mshortcuts[] = {
 #define TERMMOD (ControlMask|ShiftMask)
 
 MouseKey mkeys[] = {
-    /* button               mask            function        argument */
-    { Button4,              ShiftMask,      kscrollup,      {.i =  1} },
-    { Button5,              ShiftMask,      kscrolldown,    {.i =  1} },
-    { Button4,              TERMMOD,        zoom,           {.f =  +1} },
-    { Button5,              TERMMOD,        zoom,           {.f =  -1} },
+	/* button               mask            function        argument */
+	{ Button4,              ShiftMask,      kscrollup,      {.i =  1} },
+	{ Button5,              ShiftMask,      kscrolldown,    {.i =  1} },
+	{ Button4,              TERMMOD,        zoom,           {.f =  +1} },
+	{ Button5,              TERMMOD,        zoom,           {.f =  -1} },
 };
 
 static Shortcut shortcuts[] = {
-    /* mask                 keysym          function        argument */
-    { XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
-    { ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
-    { ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
-    { XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-    { TERMMOD,              XK_Up,          zoom,           {.f = +1} },
-    { TERMMOD,              XK_Down,        zoom,           {.f = -1} },
-    { TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
-    { TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
-    { TERMMOD,              XK_V,           clippaste,      {.i =  0} },
-    { TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-    { TERMMOD,              XK_Insert,      selpaste,       {.i =  0} },
-    { TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-    { TERMMOD,              XK_U,           externalpipe,   { .v = openurlcmd } },
-    { ShiftMask,            XK_Up,          kscrollup,      {.i = -1} },
-    { ShiftMask,            XK_Down,        kscrolldown,    {.i = -1} },
+	/* mask                 keysym          function        argument */
+	{ XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
+	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
+	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
+	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
+	{ TERMMOD,              XK_Up,          zoom,           {.f = +1} },
+	{ TERMMOD,              XK_Down,        zoom,           {.f = -1} },
+	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
+	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
+	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
+	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
+	{ TERMMOD,              XK_Insert,      selpaste,       {.i =  0} },
+	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+	{ TERMMOD,              XK_U,           externalpipe,   { .v = openurlcmd } },
+	{ ShiftMask,            XK_Up,          kscrollup,      {.i = -1} },
+	{ ShiftMask,            XK_Down,        kscrolldown,    {.i = -1} },
 };
 
 /*
@@ -483,6 +483,6 @@ static uint selmasks[] = {
  * of single wide characters.
  */
 static char ascii_printable[] =
-	" !\"#$%&'()*+,-./0123456789:;<=>?"
-	"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
-	"`abcdefghijklmnopqrstuvwxyz{|}~";
+" !\"#$%&'()*+,-./0123456789:;<=>?"
+"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
+"`abcdefghijklmnopqrstuvwxyz{|}~";
