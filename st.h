@@ -119,7 +119,7 @@ size_t utf8encode(Rune, char *);
 
 void *xmalloc(size_t);
 void *xrealloc(void *, size_t);
-char *xstrdup(char *);
+char *xstrdup(const char *);
 
 /* config.h globals */
 extern char *utmp;
@@ -133,5 +133,6 @@ extern char *termname;
 extern unsigned int tabspaces;
 extern unsigned int defaultfg;
 extern unsigned int defaultbg;
+extern unsigned int defaultcs;
 extern MouseKey mkeys[];
 extern float alpha;
