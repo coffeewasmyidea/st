@@ -100,45 +100,41 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.9;
+float alpha = 0.8;
 
 /* Apprentice colorscheme */
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 
   /* 8 normal colors */
-  [0] = "#1c1c1c", /* black   */
-  [1] = "#af5f5f", /* red     */
-  [2] = "#5f875f", /* green   */
-  [3] = "#87875f", /* yellow  */
-  [4] = "#5f87af", /* blue    */
-  [5] = "#5f5f87", /* magenta */
-  [6] = "#5f8787", /* cyan    */
-  [7] = "#6c6c6c", /* white   */
+  [0] = "#282828", /* hard contrast: #1d2021 / soft contrast: #32302f */
+  [1] = "#cc241d", /* red     */
+  [2] = "#98971a", /* green   */
+  [3] = "#d79921", /* yellow  */
+  [4] = "#458588", /* blue    */
+  [5] = "#b16286", /* magenta */
+  [6] = "#689d6a", /* cyan    */
+  [7] = "#a89984", /* white   */
 
   /* 8 bright colors */
-  [8]  = "#444444", /* black   */
-  [9]  = "#ff8700", /* red     */
-  [10] = "#87af87", /* green   */
-  [11] = "#ffffaf", /* yellow  */
-  [12] = "#8fafd7", /* blue    */
-  [13] = "#8787af", /* magenta */
-  [14] = "#5fafaf", /* cyan    */
-  [15] = "#ffffff", /* white   */
-
-  /* special colors */
-  [256] = "#262626", /* background */
-  [257] = "#bcbcbc", /* foreground */
+  [8]  = "#928374", /* black   */
+  [9]  = "#fb4934", /* red     */
+  [10] = "#b8bb26", /* green   */
+  [11] = "#fabd2f", /* yellow  */
+  [12] = "#83a598", /* blue    */
+  [13] = "#d3869b", /* magenta */
+  [14] = "#8ec07c", /* cyan    */
+  [15] = "#ebdbb2", /* white   */
 };
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor
  */
-unsigned int defaultfg = 257;
-unsigned int defaultbg = 256;
-unsigned int defaultcs = 257;
-static unsigned int defaultrcs = 250;
+unsigned int defaultfg = 15;
+unsigned int defaultbg = 0;
+unsigned int defaultcs = 15;
+static unsigned int defaultrcs = 257;
 
 /*
  * Colors used, when the specific fg == defaultfg. So in reverse mode this
