@@ -2,9 +2,9 @@
 
 This is my terminal that I use every day, and maybe it will work for you too.
 
-+ Based on [st-0.8.4](https://st.suckless.org/)
-+ Default theme: [Apprentice](http://romainl.github.io/Apprentice/)
-+ Default font: [fantasque-sans](https://github.com/belluzj/fantasque-sans)
++ Based on [st-0.8.4](https://st.suckless.org/) with patches from 0.8.5
++ Default theme: [gruvbox](https://github.com/morhetz/gruvbox)
++ Default font: [FantasqueSansMono](https://github.com/belluzj/fantasque-sans)
 + Spare font: `Source Code Pro`
 
 ## Bindings
