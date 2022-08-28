@@ -1,6 +1,6 @@
 # st - simple terminal emulator for X
 
-This is my terminal that I use every day, and maybe it will work for you too.
+This is the terminal that I use every day, and maybe it will work for you too.
 
 + Based on [st-0.8.4](https://st.suckless.org/) with patches from 0.8.5
 + Default theme: [gruvbox](https://github.com/morhetz/gruvbox)
