@@ -97,7 +97,7 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 4;
+unsigned int tabspaces = 8;
 
 /* bg opacity */
 float alpha = 0.8;
@@ -105,26 +105,44 @@ float alpha = 0.8;
 /* Apprentice colorscheme */
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
+	/* gruvbox dark */
+    "#32302f", /* hard contrast: #1d2021 / soft contrast: #32302f */
+    "#cc241d", /* red     */
+    "#98971a", /* green   */
+    "#d79921", /* yellow  */
+    "#458588", /* blue    */
+    "#b16286", /* magenta */
+    "#689d6a", /* cyan    */
+    "#a89984", /* white   */
+    "#928374", /* black   */
+    "#fb4934", /* red     */
+    "#b8bb26", /* green   */
+    "#fabd2f", /* yellow  */
+    "#83a598", /* blue    */
+    "#d3869b", /* magenta */
+    "#8ec07c", /* cyan    */
+    "#ebdbb2", /* white   */
+};
 
-  /* 8 normal colors */
-  [0] = "#32302f", /* hard contrast: #1d2021 / soft contrast: #32302f */
-  [1] = "#cc241d", /* red     */
-  [2] = "#98971a", /* green   */
-  [3] = "#d79921", /* yellow  */
-  [4] = "#458588", /* blue    */
-  [5] = "#b16286", /* magenta */
-  [6] = "#689d6a", /* cyan    */
-  [7] = "#a89984", /* white   */
-
-  /* 8 bright colors */
-  [8]  = "#928374", /* black   */
-  [9]  = "#fb4934", /* red     */
-  [10] = "#b8bb26", /* green   */
-  [11] = "#fabd2f", /* yellow  */
-  [12] = "#83a598", /* blue    */
-  [13] = "#d3869b", /* magenta */
-  [14] = "#8ec07c", /* cyan    */
-  [15] = "#ebdbb2", /* white   */
+/* Terminal colors for alternate (light) palette */
+static const char *altcolorname[] = {
+	/* gruvbox light */
+    "#fbf1c7", /* hard contrast: #f9f5d7 / soft contrast: #f2e5bc */
+    "#cc241d", /* red     */
+    "#98971a", /* green   */
+    "#d79921", /* yellow  */
+    "#458588", /* blue    */
+    "#b16286", /* magenta */
+    "#689d6a", /* cyan    */
+    "#7c6f64", /* white   */
+    "#928374", /* black   */
+    "#9d0006", /* red     */
+    "#79740e", /* green   */
+    "#b57614", /* yellow  */
+    "#076678", /* blue    */
+    "#8f3f71", /* magenta */
+    "#427b58", /* cyan    */
+    "#3c3836", /* white   */
 };
 
 /*
@@ -224,6 +242,7 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_U,           externalpipe,   { .v = openurlcmd } },
 	{ ShiftMask,            XK_Up,          kscrollup,      {.i = -1} },
 	{ ShiftMask,            XK_Down,        kscrolldown,    {.i = -1} },
+	{ XK_ANY_MOD,           XK_F11,         swapcolors,     {.i =  0} },
 };
 
 /*

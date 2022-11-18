@@ -1,6 +1,6 @@
 # st - simple terminal emulator for X
 
-This is the terminal that I use every day, and maybe it will work for you too.
+This is a terminal that I use everyday, and maybe it will work for you too.
 
 + Based on [st-0.9](https://st.suckless.org/) with patches from 0.8.5
 + Default theme: [gruvbox](https://github.com/morhetz/gruvbox)
@@ -9,6 +9,7 @@ This is the terminal that I use every day, and maybe it will work for you too.
 
 ## Bindings
 
++ **Swap theme (dark|light)** : with `F11`
 + **Scrollback**: with `shift-↑/↓`
 + **Scrollback mouse**: `shift` while scrolling the mouse
 + **Change font size**:`ctrl+shift-↑/↓`
