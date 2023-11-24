@@ -2,3 +2,4 @@ st.o
 x.o
 *.tar.gz
 *.diff
+.idea/
